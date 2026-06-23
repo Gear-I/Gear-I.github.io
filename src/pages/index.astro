@@ -1,0 +1,604 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const certifications = [
+  {
+    name: "CompTIA A+",
+    url: "https://www.credly.com/badges/bdc8b2f0-27e5-40f1-abbd-84e7d1ecf228/public_url",
+    color: "#E00000"
+  },
+  {
+    name: "CompTIA Network+",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#E00000"
+  },
+  {
+    name: "CompTIA Security+",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#E00000"
+  },
+  {
+    name: "CompTIA CySA+",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#E00000"
+  },
+  {
+    name: "CompTIA Pentest+",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#E00000"
+  },
+  {
+    name: "Google IT Support Professional",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#4285F4"
+  },
+  {
+    name: "Google Cybersecurity Professional",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#4285F4"
+  },
+  {
+    name: "Google AI Essentials",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#34A853"
+  },
+  {
+    name: "AttackIQ Cyber Threat Intelligence",
+    url: "https://www.credly.com/users/dielle-de-noon",
+    color: "#1E88E5"
+  },
+];
+
+const tools = [
+  "Python", "Bash", "PowerShell", "Linux", "Kali Linux",
+  "Splunk", "Wazuh", "Wireshark", "Nmap", "Metasploit",
+  "Burp Suite", "OWASP ZAP", "SQL", "pfSense", "Snort",
+  "Cloudflare ZTNA", "NextCloud", "TryHackMe", "iLEAPP", "ALEAPP",
+];
+
+const projects = [
+  {
+    name: "WhatsAppDesktop-Forensics",
+    url: "https://github.com/Gear-I/WhatsAppDesktop-Forensics",
+    desc: "WhatsApp Desktop forensic artifact discovery and recovery toolkit for Windows, E01, and VM images.",
+    tags: ["Digital Forensics", "Windows", "E01"],
+  },
+  {
+    name: "VeriTrace",
+    url: "https://github.com/Gear-I/VeriTrace",
+    desc: "An open-source digital forensics framework that evaluates evidence integrity by identifying inconsistencies across multiple Windows artifacts to detect potential anti-forensics.",
+    tags: ["DFIR", "Windows Forensics", "Anti-Forensics Detection"],
+  },
+  {
+    name: "iLEAPP (Fork)",
+    url: "https://github.com/Gear-I/iLEAPP",
+    desc: "iOS Logs, Events, and Plist Parser — a Python-based framework to triage iOS full file system extractions and iTunes backups.",
+    tags: ["iOS Forensics", "Python", "Mobile"],
+  },
+  {
+    name: "ALEAPP (Fork)",
+    url: "https://github.com/Gear-I/ALEAPP",
+    desc: "Android Logs Events and Protobuf Parser — shares the iLEAPP codebase but focused on Android forensic artifacts.",
+    tags: ["Android Forensics", "Python", "Mobile"],
+  },
+  {
+    name: "pfSense Homelab",
+    url: "https://github.com/Gear-I",
+    desc: "Built and documented a custom pfSense network with Splunk log monitoring for firewall and Snort IPS events.",
+    tags: ["Homelab", "SIEM", "Network Security"],
+  },
+  {
+    name: "Self-Hosted SIEM (Wazuh)",
+    url: "https://github.com/Gear-I",
+    desc: "Deployed a self-hosted Wazuh SIEM instance with identity-aware segmentation using Cloudflare ZTNA architecture.",
+    tags: ["SIEM", "Wazuh", "Zero Trust"],
+  },
+];
+
+const links = {
+  platforms: [
+    { label: "GitHub", url: "https://github.com/Gear-I" },
+    { label: "Credly — Certifications & Badges", url: "https://www.credly.com/users/dielle-de-noon" },
+  ],
+  content: [
+    { label: "Blog — Research & Notes", url: "https://ddenoon.blogspot.com/" },
+    { label: "Medium — Articles", url: "https://medium.com/@mxrdvwvn" },
+  ],
+  social: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/dielle-d-350a0b186" },
+    { label: "GitHub", url: "https://github.com/Gear-I" },
+  ],
+};
+---
+
+<Layout title="Dielle De Noon — Cybersecurity">
+  <style>
+    /* ── Hero ── */
+    .hero {
+      padding: 60px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-name {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .hero-title {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .hero-tagline {
+      font-size: 0.95rem;
+      color: var(--accent);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .hero-links a:hover {
+      background: var(--bg-hover);
+      border-color: var(--accent);
+      text-decoration: none;
+      color: var(--accent);
+    }
+
+    /* ── Stats strip ── */
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Section headings ── */
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 40px 0 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* ── About ── */
+    .about p {
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .about strong {
+      color: var(--text);
+    }
+
+    blockquote {
+      border-left: 3px solid var(--accent);
+      padding-left: 16px;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* ── Education ── */
+    .edu-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+
+    .edu-item h3 {
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .edu-item p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ── Projects ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.15s;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+    }
+
+    .project-card h3 {
+      font-size: 1rem;
+    }
+
+    .project-card h3 a {
+      color: var(--accent);
+    }
+
+    .project-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      flex: 1;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    /* ── Certifications ── */
+    .certs-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .cert-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-size: 0.875rem;
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+
+    .cert-badge:hover {
+      border-color: var(--accent);
+      text-decoration: none;
+      color: var(--accent);
+    }
+
+    .cert-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── Tools ── */
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tool-chip {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+    }
+
+    /* ── Links section ── */
+    .links-group {
+      margin-bottom: 28px;
+    }
+
+    .links-group h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .links-group ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .links-group ul li a {
+      color: var(--accent);
+      font-size: 0.95rem;
+    }
+
+    .links-group ul li a::after {
+      content: " ↗";
+      font-size: 0.75em;
+      opacity: 0.6;
+    }
+
+    /* ── Nav jump links ── */
+    .jump-nav {
+      padding: 20px 0 10px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .jump-nav a {
+      color: var(--text-muted);
+      margin-right: 16px;
+    }
+
+    .jump-nav a:hover {
+      color: var(--accent);
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--text-muted);
+    }
+  </style>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-name">Dielle De Noon</div>
+    <div class="hero-title">Cybersecurity Graduate Student · SOC | DFIR | Digital Forensics</div>
+    <div class="hero-tagline">"Validate everything that matters."</div>
+    <div class="hero-links">
+      <a href="https://github.com/Gear-I" target="_blank" rel="noopener">
+        ⚙ GitHub
+      </a>
+      <a href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener">
+        🏅 Credly Certifications
+      </a>
+      <a href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener">
+        📝 Blog
+      </a>
+      <a href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank" rel="noopener">
+        💼 LinkedIn
+      </a>
+      <a href="https://medium.com/@mxrdvwvn" target="_blank" rel="noopener">
+        ✍ Medium
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stat">
+      <span class="stat-value">9+</span>
+      <span class="stat-label">Certifications</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">8</span>
+      <span class="stat-label">GitHub Repositories</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">M.S.</span>
+      <span class="stat-label">Cybersecurity (WGU, 2026)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">SOC · DFIR</span>
+      <span class="stat-label">Focus Areas</span>
+    </div>
+  </section>
+
+  <!-- Jump nav -->
+  <nav class="jump-nav">
+    Jump to:
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#tools">Tools</a>
+    <a href="#links-section">Links</a>
+  </nav>
+
+  <!-- About -->
+  <section id="about" class="about">
+    <h2 class="section-title">About</h2>
+    <p>
+      Cybersecurity graduate student focused on <strong>Security Operations (SOC)</strong>, 
+      <strong>Digital Forensics</strong>, and <strong>Incident Response (DFIR)</strong>. 
+      Through hands-on labs, homelab projects, and real-world investigation scenarios, 
+      I develop practical skills in threat detection, log analysis, digital forensics, 
+      SIEM technologies, and security monitoring.
+    </p>
+    <blockquote>
+      "Tool reports are not the data. The data is the data. Validate everything that matters."
+    </blockquote>
+    <p>
+      <strong>Western Governors University</strong> — Completing an M.S. in Cybersecurity and Information Assurance 
+      (Anticipated August 2026), building on a B.S. completed November 2025.
+    </p>
+    <p>
+      Member of the <strong>WGU Cybersecurity Club</strong>. 
+      Excellence Award recipient for Legal Issues in Information Security. 
+      Passionate about open-source forensics tooling and continuous learning in the 
+      ever-evolving threat landscape.
+    </p>
+    <p>
+      Research notes and write-ups at 
+      <a href="https://ddenoon.blogspot.com/" target="_blank">ddenoon.blogspot.com</a> 
+      and <a href="https://medium.com/@mxrdvwvn" target="_blank">Medium</a>.
+      All certifications and badges on 
+      <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">Credly</a>.
+    </p>
+
+    <h2 class="section-title">Education</h2>
+    <div class="edu-item">
+      <h3>M.S. Cybersecurity and Information Assurance</h3>
+      <p>Western Governors University · Anticipated August 2026</p>
+    </div>
+    <div class="edu-item">
+      <h3>B.S. Cybersecurity and Information Assurance</h3>
+      <p>Western Governors University · Completed November 2025</p>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2 class="section-title">Projects & Repositories</h2>
+    <div class="projects-grid">
+      {projects.map((p) => (
+        <div class="project-card">
+          <h3><a href={p.url} target="_blank" rel="noopener">{p.name}</a></h3>
+          <p>{p.desc}</p>
+          <div class="tags">
+            {p.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </div>
+      ))}
+    </div>
+    <p style="margin-top: 20px; font-size: 0.875rem; color: var(--text-muted);">
+      All repositories on <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a>
+    </p>
+  </section>
+
+  <!-- Certifications -->
+  <section id="certifications">
+    <h2 class="section-title">Certifications</h2>
+    <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 16px;">
+      All certifications verified on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">Credly</a>.
+    </p>
+    <div class="certs-grid">
+      {certifications.map((c) => (
+        <a class="cert-badge" href={c.url} target="_blank" rel="noopener">
+          <span class="cert-dot" style={`background: ${c.color};`}></span>
+          {c.name}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Tools -->
+  <section id="tools">
+    <h2 class="section-title">Tools & Technologies</h2>
+    <div class="tools-list">
+      {tools.map((t) => <span class="tool-chip">{t}</span>)}
+    </div>
+  </section>
+
+  <!-- Honors -->
+  <section id="honors">
+    <h2 class="section-title">Honors & Memberships</h2>
+    <div class="edu-item">
+      <h3>🏅 Excellence Award — Legal Issues in Information Security</h3>
+      <p>Western Governors University</p>
+    </div>
+    <div class="edu-item">
+      <h3>👩‍🎓 Member — WGU Cybersecurity Club</h3>
+      <p>Western Governors University</p>
+    </div>
+  </section>
+
+  <!-- Links -->
+  <section id="links-section">
+    <h2 class="section-title">Links</h2>
+
+    <div class="links-group">
+      <h3>Platforms</h3>
+      <ul>
+        {links.platforms.map((l) => (
+          <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="links-group">
+      <h3>Content</h3>
+      <ul>
+        {links.content.map((l) => (
+          <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="links-group">
+      <h3>Social</h3>
+      <ul>
+        {links.social.map((l) => (
+          <li><a href={l.url} target="_blank" rel="noopener">{l.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p>Dielle De Noon · Cybersecurity & Digital Forensics · Open Source Contributor</p>
+    <p style="margin-top: 6px;">
+      <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a> · 
+      <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">credly.com/users/dielle-de-noon</a>
+    </p>
+    <p style="margin-top: 10px;">© {new Date().getFullYear()}</p>
+  </footer>
+</Layout>
