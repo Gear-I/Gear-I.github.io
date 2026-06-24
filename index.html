@@ -461,14 +461,67 @@
   <p style="margin-top:10px;">© 2026</p>
 </footer>
 
-<!-- Back to top -->
+<!-- Back to top and Theme Toggle -->
+
+<!-- Back-to-top button -->
 <button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
 
+<!-- Theme chooser (Light / Dark) -->
+<div id="theme-toggle" role="group" aria-label="Theme switch">
+  <button id="light-btn" aria-pressed="false" title="Light theme">☀️</button>
+  <button id="dark-btn" aria-pressed="false" title="Dark theme">🌙</button>
+</div>
+
+<style>
+  /* Back-to-top button styling */
+  #top-btn{position:fixed;right:20px;bottom:20px;padding:10px 12px;border-radius:6px;border:none;background:#222;color:#fff;font-size:18px;cursor:pointer;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s;z-index:999}
+  #top-btn.visible{opacity:1;transform:translateY(0)}
+
+  /* Theme toggle styling */
+  #theme-toggle{position:fixed;left:20px;bottom:20px;display:flex;gap:6px;align-items:center;padding:6px;border-radius:8px;background:rgba(255,255,255,0.9);box-shadow:0 2px 8px rgba(0,0,0,.15);z-index:999}
+  #theme-toggle button{border:0;background:transparent;cursor:pointer;font-size:18px;padding:6px;border-radius:6px}
+  #theme-toggle button[aria-pressed="true"]{background:rgba(0,0,0,0.08)}
+
+  /* Dark theme tweaks */
+  :root{--bg:#ffffff;--text:#111}
+  [data-theme="dark"]{--bg:#0b0d10;--text:#e7e7e7}
+  body{background-color:var(--bg);color:var(--text)}
+  [data-theme="dark"] #theme-toggle{background:rgba(0,0,0,0.45);color:#fff}
+</style>
+
 <script>
+  // Back-to-top behavior
   const btn = document.getElementById('top-btn');
   window.addEventListener('scroll', () => {
     btn.classList.toggle('visible', window.scrollY > 300);
   });
+
+  // Theme chooser behavior
+  const root = document.documentElement;
+  const lightBtn = document.getElementById('light-btn');
+  const darkBtn = document.getElementById('dark-btn');
+  const THEME_KEY = 'theme';
+
+  function applyTheme(theme){
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
+    lightBtn.setAttribute('aria-pressed', theme === 'light');
+    darkBtn.setAttribute('aria-pressed', theme === 'dark');
+  }
+
+  // Initialize theme from localStorage or system preference
+  (function(){
+    const saved = localStorage.getItem(THEME_KEY);
+    if(saved === 'light' || saved === 'dark'){
+      applyTheme(saved);
+      return;
+    }
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  })();
+
+  lightBtn.addEventListener('click', () => applyTheme('light'));
+  darkBtn.addEventListener('click', () => applyTheme('dark'));
 </script>
 
 </body>
