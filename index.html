@@ -689,13 +689,10 @@
         <button id="light-btn" aria-pressed="false" title="Light theme">☀️</button>
         <button id="dark-btn" aria-pressed="false" title="Dark theme">🌙</button>
     </div>
-
-    <script>
-        // ── GitHub repos via Cloudflare Worker proxy ──
-        async function fetchGitHubRepos() {
+        async function fetchGitHubRepos() { 
         const projectGrid = document.querySelector('.projects-grid');
         const repoCountEl = document.getElementById('repo-count');
-        const workerUrl = 'https://portfolio.ddenoon748.workers.dev';
+        const workerUrl = 'https://gh-repos-proxy.ddenoon748.workers.dev';
         try {
         const response = await fetch(workerUrl);
         if (!response.ok) throw new Error('Proxy error or rate issue');
@@ -756,6 +753,5 @@
         })();
         lightBtn.addEventListener('click', () => applyTheme('light'));
         darkBtn.addEventListener('click', () => applyTheme('dark'));
-    </script>
 </body>
 </html>
