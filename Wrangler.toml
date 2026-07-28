@@ -1,0 +1,15 @@
+name = "gh-repos-proxy"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+# Deploys to https://<name>.<your-subdomain>.workers.dev
+# i.e. https://gh-repos-proxy.ddenoon748.workers.dev
+#
+# NOTE: this must be a DIFFERENT worker name than your site ("portfolio"),
+# which is already deployed at https://portfolio.ddenoon748.workers.dev and
+# serves the HTML page itself. Reusing that name/URL for this proxy would
+# overwrite your live site.
+
+# Optional: raise GitHub's rate limit from 60/hr to 5,000/hr.
+# After deploying, run: wrangler secret put GITHUB_TOKEN
+# and paste a GitHub personal access token (no scopes needed for public repos).
