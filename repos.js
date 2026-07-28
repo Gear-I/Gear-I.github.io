@@ -33,7 +33,7 @@ function languageColor(language) {
 async function fetchGitHubRepos() {
     const projectGrid = document.querySelector('.projects-grid');
     const repoCountEl = document.getElementById('repo-count');
-    const workerUrl = 'https://gear.ddenoon748.workers.dev';
+    const workerUrl = 'https://gh-repos-proxy.ddenoon748.workers.dev';
     try {
         const response = await fetch(workerUrl);
         if (!response.ok) throw new Error('Proxy error or rate issue');
