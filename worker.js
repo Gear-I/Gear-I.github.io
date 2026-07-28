@@ -3,7 +3,7 @@
  *
  * Deploy this as its OWN worker (separate from your "portfolio" site worker),
  * e.g. named "gh-repos-proxy" so it lands at:
- *   https://gh-repos-proxy.ddenoon748.workers.dev
+ *   https://gear.ddenoon748.workers.dev
  * Called from portfolio.html via fetchGitHubRepos().
  *
  * Why this exists:
