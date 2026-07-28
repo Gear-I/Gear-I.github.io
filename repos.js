@@ -1,4 +1,10 @@
 // ── GitHub repos via Cloudflare Worker proxy ──
+
+// Repos to exclude from the portfolio display (case-insensitive match on repo name).
+// These stay public on GitHub — they're just not shown here.
+// Add more names to this list to hide additional repos.
+const HIDDEN_REPOS = ['gear-i.github.io'];
+
 async function fetchGitHubRepos() {
     const projectGrid = document.querySelector('.projects-grid');
     const repoCountEl = document.getElementById('repo-count');
@@ -7,7 +13,9 @@ async function fetchGitHubRepos() {
         const response = await fetch(workerUrl);
         if (!response.ok) throw new Error('Proxy error or rate issue');
         const repos = await response.json();
-        const visibleRepos = repos.filter(repo => !repo.fork);
+        // Show everything except explicitly hidden repos (forks included,
+        // e.g. iLEAPP/ALEAPP contributions).
+        const visibleRepos = repos.filter(repo => !HIDDEN_REPOS.includes(repo.name.toLowerCase()));
 
         if (repoCountEl) repoCountEl.textContent = visibleRepos.length;
 
@@ -33,4 +41,4 @@ async function fetchGitHubRepos() {
         projectGrid.innerHTML = '<p style="color: var(--muted); font-size: 0.85rem;">Failed to load project items.</p>';
     }
 }
-document.addEventListener('DOMContentLoaded', fetchGitHubRepos);// JavaScript source code
+document.addEventListener('DOMContentLoaded', fetchGitHubRepos);
