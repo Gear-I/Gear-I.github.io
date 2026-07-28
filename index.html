@@ -46,6 +46,7 @@
             a:hover {
                 text-decoration: underline;
             }
+
         /* ── Cover ── */
         .cover {
             width: calc(100% + 40px);
@@ -73,6 +74,7 @@
             color: rgba(88,166,255,0.4);
             font-family: monospace;
         }
+
         /* ── Hero ── */
         .hero {
             padding: 0 0 32px;
@@ -97,6 +99,8 @@
                 object-fit: cover;
                 object-position: center;
             }
+
+
 
         .hero-name {
             font-size: 1.75rem;
@@ -147,6 +151,7 @@
             border-color: rgba(88,166,255,.4);
             color: var(--accent);
         }
+
         /* ── Stats ── */
         .stats {
             display: flex;
@@ -175,6 +180,7 @@
             color: var(--muted);
             margin-top: 4px;
         }
+
         /* ── Jump nav ── */
         .jump-nav {
             padding: 14px 0;
@@ -192,6 +198,7 @@
                     color: var(--accent);
                     text-decoration: none;
                 }
+
         /* ── Section title ── */
         .section-title {
             font-size: 1.2rem;
@@ -200,6 +207,7 @@
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
         }
+
         /* ── About ── */
         .about p {
             color: var(--muted);
@@ -221,6 +229,7 @@
             border-radius: 0 6px 6px 0;
             font-size: 0.95rem;
         }
+
         /* ── Cards (edu / honor) ── */
         .card {
             background: var(--bg-card);
@@ -239,6 +248,7 @@
                 color: var(--muted);
                 margin-top: 3px;
             }
+
         /* ── Projects grid ── */
         .projects-grid {
             display: grid;
@@ -299,6 +309,7 @@
             padding: 2px 8px;
             border-radius: 20px;
         }
+
         /* ── Certifications ── */
         .certs-grid {
             display: flex;
@@ -331,6 +342,7 @@
             border-radius: 50%;
             flex-shrink: 0;
         }
+
         /* ── Tools ── */
         .tools-list {
             display: flex;
@@ -346,6 +358,7 @@
             border-radius: 6px;
             font-size: 0.85rem;
         }
+
         /* ── Links ── */
         .links-columns {
             display: grid;
@@ -378,6 +391,7 @@
                     font-size: .7em;
                     opacity: .5;
                 }
+
         /* ── Footer ── */
         footer {
             margin-top: 60px;
@@ -412,103 +426,43 @@
                 object-fit: cover;
                 display: block;
             }
-        /* ── Theme toggle & back-to-top ── */
+
+        /* ── Back to top ── */
         #top-btn {
             position: fixed;
-            right: 20px;
-            bottom: 20px;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: none;
-            background: var(--btn-bg, var(--bg-card));
-            color: var(--btn-color, var(--text));
-            font-size: 18px;
+            bottom: 24px;
+            right: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
             cursor: pointer;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity .25s, transform .25s;
-            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: background .2s;
         }
+
+            #top-btn:hover {
+                background: var(--bg-hover);
+            }
 
             #top-btn.visible {
-                opacity: 1;
-                transform: translateY(0);
+                display: flex;
             }
-
-        #theme-toggle {
-            position: fixed;
-            left: 20px;
-            bottom: 20px;
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            padding: 6px;
-            border-radius: 8px;
-            background: var(--ui-bg, var(--bg-card));
-            box-shadow: 0 2px 8px rgba(0,0,0,.15);
-            z-index: 999;
-        }
-
-            #theme-toggle button {
-                border: 0;
-                background: transparent;
-                cursor: pointer;
-                font-size: 18px;
-                padding: 6px;
-                border-radius: 6px;
-                color: inherit;
-            }
-
-                #theme-toggle button[aria-pressed="true"] {
-                    background: rgba(255,255,255,0.08);
-                }
-
-        [data-theme="light"] {
-            --bg: #ffffff;
-            --bg-card: #f7f9fb;
-            --bg-hover: #eef3f7;
-            --text: #111111;
-            --muted: #555555;
-            --accent: #065fd4;
-            --border: #e6e6e6;
-            --tag-bg: #f0f3f6;
-            --ui-bg: rgba(255,255,255,0.95);
-            --btn-bg: #222222;
-            --btn-color: #ffffff;
-        }
-
-        [data-theme="dark"] {
-            --bg: #0d1117;
-            --bg-card: #161b22;
-            --bg-hover: #1f2937;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --accent: #58a6ff;
-            --border: #30363d;
-            --tag-bg: #21262d;
-            --ui-bg: rgba(0,0,0,0.45);
-            --btn-bg: #e6e6e6;
-            --btn-color: #0b0d10;
-        }
-
-        @media (max-width:520px) {
-            #theme-toggle {
-                left: 12px;
-                bottom: 14px;
-            }
-
-            #top-btn {
-                right: 12px;
-                bottom: 14px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Cover -->
+
+    <!--Cover -->
     <div class="cover">
         <div class="cover-label">SOC · DFIR · Digital Forensics</div>
     </div>
+
     <!-- Hero -->
     <section class="hero">
         <div class="avatar-wrap">
@@ -525,21 +479,32 @@
             <a class="btn" href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener">📝 Research Blog</a>
         </div>
     </section>
+
     <!-- Stats -->
     <section class="stats">
+
         <div class="stat">
             <span class="stat-value" id="repo-count">--</span>
             <span class="stat-label">Public Repositories</span>
         </div>
+
+        <div class="stat">
+            <span class="stat-value" id="followers">--</span>
+            <span class="stat-label">GitHub Followers</span>
+        </div>
+
         <div class="stat">
             <span class="stat-value">9+</span>
             <span class="stat-label">Certifications</span>
         </div>
+
         <div class="stat">
             <span class="stat-value">2+</span>
             <span class="stat-label">Years in Cybersecurity</span>
         </div>
+
     </section>
+
     <!-- Jump nav -->
     <nav class="jump-nav">
         Jump to:
@@ -549,17 +514,23 @@
         <a href="#tools">Tools</a>
         <a href="#links-section">Links</a>
     </nav>
+
     <!-- About -->
     <section id="about" class="about">
         <h2 class="section-title">About</h2>
         <p>
+        <p>
             Cybersecurity professional and digital forensics analyst focused on evidence-driven investigations, artifact analysis, and open-source forensic tooling. I contribute to the LEAPPs Digital Forensics Platform and develop DFIR-focused projects that support forensic analysis, artifact validation, and anti-forensics detection.
             My work combines hands-on security administration experience, threat intelligence research, homelab experimentation, and digital forensic investigations. I am particularly interested in Windows forensics, mobile device forensics, incident response, and the development of tools that help investigators validate and correlate digital evidence.
+
         </p>
+
+
         <blockquote>
             "Follow the timeline. Validate the artifacts. Let the evidence tell the story".
         </blockquote>
         <p>Opinions are mine only, subject to change, and does not represent anyone else.</p>
+
         <p>
             Contributor to the <strong>LEAPPs Digital Forensics Python Platform</strong> —
             open-source tools for iOS and Android forensics.
@@ -567,6 +538,7 @@
             and <a href="https://medium.com/@mxrdvwvn" target="_blank">Medium</a>.
             All certifications on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">Credly</a>.
         </p>
+
         <h2 class="section-title">Education</h2>
         <div class="card">
             <h3>M.S. Cybersecurity and Information Assurance</h3>
@@ -577,35 +549,47 @@
             <p>Western Governors University · Completed November 2025</p>
         </div>
     </section>
+
     <!-- Projects -->
     <section id="projects">
         <h2 class="section-title">Projects &amp; Repositories</h2>
         <div class="projects-grid">
+
             <div class="project-card">
                 <h3><span>🔍</span><a href="https://github.com/Gear-I/VeriTrace" target="_blank" rel="noopener">VeriTrace</a></h3>
                 <p>An open-source DFIR framework that evaluates evidence integrity by identifying inconsistencies across multiple Windows artifacts to detect potential anti-forensics activity.</p>
                 <div class="tags"><span class="tag">DFIR</span><span class="tag">Windows Forensics</span><span class="tag">Anti-Forensics Detection</span></div>
             </div>
+
+
+
+
             <div class="project-card">
                 <h3><span>📱</span><a href="https://github.com/Gear-I/iLEAPP" target="_blank" rel="noopener">iLEAPP (Fork)</a></h3>
                 <p>iOS Logs, Events, and Plist Parser — a Python-based framework to triage iOS full file system extractions and iTunes backups.</p>
                 <div class="tags"><span class="tag">iOS Forensics</span><span class="tag">Python</span><span class="tag">Mobile</span></div>
             </div>
+
             <div class="project-card">
                 <h3><span>🤖</span><a href="https://github.com/Gear-I/ALEAPP" target="_blank" rel="noopener">ALEAPP (Fork)</a></h3>
                 <p>Android Logs Events and Protobuf Parser — shares the iLEAPP codebase but focused on Android forensic artifacts.</p>
                 <div class="tags"><span class="tag">Android Forensics</span><span class="tag">Python</span><span class="tag">Mobile</span></div>
             </div>
+
             <div class="project-card">
                 <h3><span>🛡️</span><a href="https://medium.com/@mxrdvwvn/pfsense-networking-part-1-a4539ecd9ffc" target="_blank" rel="noopener">pfSense Homelab</a></h3>
                 <p>Built and documented a custom pfSense network with Splunk log monitoring for firewall events and Snort IPS alerts.</p>
                 <div class="tags"><span class="tag">Homelab</span><span class="tag">SIEM</span><span class="tag">Network Security</span></div>
             </div>
+
+
+
         </div>
         <p style="margin-top:18px;font-size:0.85rem;color:var(--muted);">
             All repositories → <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a>
         </p>
     </section>
+
     <!-- Certifications -->
     <section id="certifications">
         <h2 class="section-title">Certifications</h2>
@@ -624,6 +608,9 @@
             <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#1E88E5"></span>AttackIQ Cyber Threat Intelligence</a>
         </div>
     </section>
+
+
+
     <!-- Honors -->
     <section id="honors">
         <h2 class="section-title">Honors &amp; Memberships</h2>
@@ -636,6 +623,7 @@
             <p>Western Governors University</p>
         </div>
     </section>
+
     <!-- Links -->
     <section id="links-section">
         <h2 class="section-title">Links</h2>
@@ -659,7 +647,7 @@
                 <ul>
                     <li><a href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank">LinkedIn</a></li>
                     <li><a href="https://github.com/Gear-I" target="_blank">GitHub</a></li>
-                    <li><a href="https://infosec.exchange/@ddenoon" target="_blank">InfoSec Exchange</a></li>
+                    <li><a href="https://infosec.exchange/@ddenoon" target"_blank">InfoSec Exchange</a></li>
                 </ul>
             </div>
             <div class="links-group">
@@ -672,8 +660,10 @@
             </div>
         </div>
     </section>
+
     <!-- Footer -->
     <footer>
+
         <p>Dielle De Noon · Cybersecurity &amp; Digital Forensics · Open Source Contributor</p>
         <p>
             <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a> ·
@@ -682,76 +672,227 @@
         </p>
         <p style="margin-top:10px;">© 2026</p>
     </footer>
-    <!-- Back to top -->
+
+    <!-- Back to top and Theme Toggle -->
+    <!-- Back-to-top button -->
     <button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
-    <!-- Theme chooser -->
+
+    <!-- Theme chooser (Light / Dark) -->
     <div id="theme-toggle" role="group" aria-label="Theme switch">
         <button id="light-btn" aria-pressed="false" title="Light theme">☀️</button>
         <button id="dark-btn" aria-pressed="false" title="Dark theme">🌙</button>
     </div>
-        async function fetchGitHubRepos() { 
-        const projectGrid = document.querySelector('.projects-grid');
-        const repoCountEl = document.getElementById('repo-count');
-        const workerUrl = 'https://gh-repos-proxy.ddenoon748.workers.dev';
-        try {
-        const response = await fetch(workerUrl);
-        if (!response.ok) throw new Error('Proxy error or rate issue');
-        const repos = await response.json();
-        const visibleRepos = repos.filter(repo => !repo.fork);
 
-        if (repoCountEl) repoCountEl.textContent = visibleRepos.length;
-
-        projectGrid.innerHTML = '';
-        visibleRepos.forEach(repo => {
-        const card = document.createElement('div');
-        card.className = 'project-card';
-        const tagsHTML = repo.topics && repo.topics.length > 0
-        ? repo.topics.map(topic => `<span class="tag">${topic}</span>`).join('')
-        : `<span class="tag">${repo.language || 'Project'}</span>`;
-        card.innerHTML = `
-        <h3>
-        <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" fill="currentColor" style="color: var(--muted);"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 0 1 1-1h8Z"></path></svg>
-        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.name}</a>
-        </h3>
-        <p>${repo.description || 'No description provided.'}</p>
-        <div class="tags">${tagsHTML}</div>
-        `;
-        projectGrid.appendChild(card);
-        });
-        } catch (error) {
-        console.error('Error fetching data through proxy:', error);
-        projectGrid.innerHTML = '<p style="color: var(--muted); font-size: 0.85rem;">Failed to load project items.</p>';
+    <style>
+        /* Back-to-top button styling */
+        #top-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: none;
+            background: var(--btn-bg);
+            color: var(--btn-color);
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .25s,transform .25s;
+            z-index: 999
         }
-        }
-        document.addEventListener('DOMContentLoaded', fetchGitHubRepos);
 
-        // ── Back-to-top behavior ──
+            #top-btn.visible {
+                opacity: 1;
+                transform: translateY(0)
+            }
+
+        /* Theme toggle styling */
+        #theme-toggle {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding: 6px;
+            border-radius: 8px;
+            background: var(--ui-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,.15);
+            z-index: 999
+        }
+
+            #theme-toggle button {
+                border: 0;
+                background: transparent;
+                cursor: pointer;
+                font-size: 18px;
+                padding: 6px;
+                border-radius: 6px;
+                color: inherit
+            }
+
+                #theme-toggle button[aria-pressed="true"] {
+                    background: rgba(0,0,0,0.08)
+                }
+
+        /* Theme variables and text color handling (light defaults) */
+        :root {
+            --bg: #ffffff;
+            --bg-card: #f7f9fb;
+            --bg-hover: #eef3f7;
+            --text: #111111;
+            --muted: #555555;
+            --accent: #065fd4;
+            --link: #065fd4;
+            --border: #e6e6e6;
+            --tag-bg: #f0f3f6;
+            --ui-bg: rgba(255,255,255,0.95);
+            --btn-bg: #222222;
+            --btn-color: #ffffff;
+        }
+
+        /* Dark theme (overrides) */
+        [data-theme="dark"] {
+            --bg: #0d1117;
+            --bg-card: #161b22;
+            --bg-hover: #1f2937;
+            --text: #e6edf3;
+            --muted: #8b949e;
+            --accent: #58a6ff;
+            --link: #58a6ff;
+            --border: #30363d;
+            --tag-bg: #21262d;
+            --ui-bg: rgba(0,0,0,0.45);
+            --btn-bg: #e6e6e6;
+            --btn-color: #0b0d10;
+        }
+
+        /* Apply colors broadly so site text respects theme */
+        html, body {
+            background-color: var(--bg);
+            color: var(--text)
+        }
+
+        body, p, li, span, input, button, textarea {
+            color: var(--text)
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text);
+            margin: 0
+        }
+
+        a, a:visited {
+            color: var(--link)
+        }
+
+            a:hover, a:focus {
+                opacity: 0.9
+            }
+
+        footer, header, nav, section, main {
+            color: var(--text)
+        }
+
+        code, pre {
+            color: var(--text);
+            background: transparent
+        }
+
+        /* Ensure components use theme-aware variables */
+        .card {
+            background: var(--bg-card);
+            border-color: var(--border)
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-color: var(--border)
+        }
+
+        .cert-badge {
+            background: var(--bg-card);
+            border-color: var(--border)
+        }
+
+        .tag {
+            background: var(--tag-bg);
+            border-color: var(--border);
+            color: var(--muted)
+        }
+
+        .btn {
+            background: var(--bg-card);
+            border-color: var(--border);
+            color: var(--text)
+        }
+
+        .btn-accent {
+            background: rgba(88,166,255,.08);
+            border-color: rgba(88,166,255,.3);
+            color: var(--accent)
+        }
+
+        /* Theme-toggle specific adjustments */
+        #theme-toggle {
+            background: var(--ui-bg)
+        }
+
+        [data-theme="dark"] #theme-toggle {
+            color: var(--text)
+        }
+
+        /* Small responsive tweak */
+        @media (max-width:520px) {
+            #theme-toggle {
+                left: 12px;
+                bottom: 14px
+            }
+
+            #top-btn {
+                right: 12px;
+                bottom: 14px
+            }
+        }
+    </style>
+
+    <script>
+        // Back-to-top behavior
         const btn = document.getElementById('top-btn');
         window.addEventListener('scroll', () => {
         btn.classList.toggle('visible', window.scrollY > 300);
         });
 
-        // ── Theme chooser behavior ──
+        // Theme chooser behavior
         const root = document.documentElement;
         const lightBtn = document.getElementById('light-btn');
         const darkBtn = document.getElementById('dark-btn');
         const THEME_KEY = 'theme';
-        function applyTheme(theme) {
+
+        function applyTheme(theme){
         root.setAttribute('data-theme', theme);
         localStorage.setItem(THEME_KEY, theme);
         lightBtn.setAttribute('aria-pressed', theme === 'light');
         darkBtn.setAttribute('aria-pressed', theme === 'dark');
         }
-        (function initTheme() {
+
+        // Initialize theme from localStorage or system preference
+        (function(){
         const saved = localStorage.getItem(THEME_KEY);
-        if (saved === 'light' || saved === 'dark') {
+        if(saved === 'light' || saved === 'dark'){
         applyTheme(saved);
         return;
         }
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         applyTheme(prefersDark ? 'dark' : 'light');
         })();
+
         lightBtn.addEventListener('click', () => applyTheme('light'));
         darkBtn.addEventListener('click', () => applyTheme('dark'));
+    </script>
+
 </body>
 </html>
+
+
