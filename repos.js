@@ -5,6 +5,44 @@
 // Add more names to this list to hide additional repos.
 const HIDDEN_REPOS = ['gear-i.github.io'];
 
+// Maps GitHub's repo.language values to Simple Icons slugs (simpleicons.org)
+// for the small tech-logo icon on each project card. Unmapped languages just
+// skip the icon — add more entries here as needed.
+const LANGUAGE_ICONS = {
+    'JavaScript': 'javascript',
+    'TypeScript': 'typescript',
+    'Python': 'python',
+    'Java': 'openjdk',
+    'C': 'c',
+    'C++': 'cplusplus',
+    'C#': 'csharp',
+    'Go': 'go',
+    'Rust': 'rust',
+    'Ruby': 'ruby',
+    'PHP': 'php',
+    'Swift': 'swift',
+    'Kotlin': 'kotlin',
+    'Dart': 'dart',
+    'HTML': 'html5',
+    'CSS': 'css3',
+    'Shell': 'gnubash',
+    'PowerShell': 'powershell',
+    'Jupyter Notebook': 'jupyter',
+    'Vue': 'vuedotjs',
+    'R': 'r',
+    'Perl': 'perl',
+    'Scala': 'scala',
+    'Lua': 'lua',
+    'Dockerfile': 'docker',
+    'Objective-C': 'apple',
+};
+
+function languageIconHTML(language) {
+    const slug = language && LANGUAGE_ICONS[language];
+    if (!slug) return '';
+    return `<img class="lang-icon" src="https://cdn.simpleicons.org/${slug}" alt="${language}" title="${language}" onerror="this.remove()" />`;
+}
+
 async function fetchGitHubRepos() {
     const projectGrid = document.querySelector('.projects-grid');
     const repoCountEl = document.getElementById('repo-count');
@@ -30,6 +68,7 @@ async function fetchGitHubRepos() {
                 <h3>
                     <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" fill="currentColor" style="color: var(--muted);"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 0 1 1-1h8Z"></path></svg>
                     <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.name}</a>
+                    ${languageIconHTML(repo.language)}
                 </h3>
                 <p>${repo.description || 'No description provided.'}</p>
                 <div class="tags">${tagsHTML}</div>
