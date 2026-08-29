@@ -7,709 +7,495 @@
     <title>Dielle De Noon — Cybersecurity & Digital Forensics</title>
     <style>
         :root {
-            --bg: #0d1117;
-            --bg-card: #161b22;
-            --bg-hover: #1f2937;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --accent: #58a6ff;
-            --border: #30363d;
-            --tag-bg: #21262d;
+            --ink: #0f1923;
+            --ink-light: #2e4057;
+            --paper: #f6f7f5;
+            --surface: #ffffff;
+            --border: #e2e6e1;
+            --teal: #1a9e8f;
+            --teal-dim: #147a6e;
+            --slate: #6b7a8d;
+            --accent-bg: #edf8f7;
+            --nav-bg: rgba(255,255,255,.85);
+            --r-sm: 8px;
+            --r-md: 14px;
+            --r-lg: 20px;
+            --sh-xs: 0 1px 3px rgba(15,25,35,.08);
+            --sh-sm: 0 2px 8px rgba(15,25,35,.10);
+            --sh-md: 0 6px 24px rgba(15,25,35,.12);
+            --max-w: 720px;
+            --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        html.dark {
+            --nav-bg: rgba(13,17,23,.85);
+            --ink: #e8edf2;
+            --ink-light: #a8b8c8;
+            --paper: #0d1117;
+            --surface: #161b22;
+            --border: #2a3340;
+            --teal: #20c5b3;
+            --teal-dim: #1a9e8f;
+            --slate: #6b8099;
+            --accent-bg: #0d2420;
+            --sh-xs: 0 1px 3px rgba(0,0,0,.3);
+            --sh-sm: 0 2px 8px rgba(0,0,0,.4);
+            --sh-md: 0 6px 24px rgba(0,0,0,.5);
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        img { display: block; max-width: 100%; }
+        a { color: inherit; text-decoration: none; }
+        @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+        :focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
 
         body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            font-size: 16px;
+            font-family: var(--sans);
+            background: var(--paper);
+            color: var(--ink);
             line-height: 1.6;
-            max-width: 860px;
-            margin: 0 auto;
-            padding: 0 20px 80px;
+            font-size: 15px;
+            min-height: 100vh;
+        }
+        body::before {
+            content: ''; position: fixed; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--teal-dim), var(--teal), var(--teal-dim));
+            opacity: .22; z-index: 700; pointer-events: none;
         }
 
-        a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        .page { max-width: var(--max-w); margin: 0 auto; padding: 0 16px 64px; }
 
-            a:hover {
-                text-decoration: underline;
-            }
-        /* ── Cover ── */
+        /* ── Scroll progress + sticky nav ── */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 4px; width: 100%;
+            transform: scaleX(var(--scroll, 0)); transform-origin: left center;
+            background: linear-gradient(90deg, var(--teal-dim), var(--teal));
+            z-index: 701; pointer-events: none;
+        }
+        #sticky-nav {
+            position: fixed; top: 0; left: 0; right: 0; height: 52px; z-index: 650;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 18px;
+            background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(0,0,0,.22);
+            transform: translateY(-100%); transition: transform .25s; visibility: hidden;
+        }
+        #sticky-nav.show { transform: translateY(0); visibility: visible; }
+        .sn-name { font-weight: 700; font-size: .92rem; color: var(--ink); }
+        .sn-right { display: flex; align-items: center; gap: 18px; }
+        .sn-links { display: flex; gap: 16px; font-size: .78rem; font-weight: 600; }
+        .sn-links a { color: var(--slate); transition: color .15s; }
+        .sn-links a:hover, .sn-links a.active { color: var(--teal); }
+        .sn-cta {
+            padding: 6px 15px; border-radius: 99px; background: var(--teal); color: #06231f;
+            font-size: .76rem; font-weight: 700; white-space: nowrap;
+            transition: transform .15s, box-shadow .15s;
+        }
+        .sn-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 14px color-mix(in srgb, var(--teal) 40%, transparent); }
+        @media (max-width: 560px) { .sn-links { display: none; } }
+
+        /* ── Cover + profile ── */
         .cover {
-            width: calc(100% + 40px);
-            margin-left: -20px;
-            height: 160px;
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 40%, #1a2332 70%, #0d1117 100%);
-            position: relative;
-            overflow: hidden;
+            width: 100%; margin-top: 14px; height: 220px; overflow: hidden; position: relative;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--ink) 0%, #123c37 45%, var(--teal-dim) 100%);
         }
-
-            .cover::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background: repeating-linear-gradient( 45deg, transparent, transparent 40px, rgba(88,166,255,0.03) 40px, rgba(88,166,255,0.03) 41px );
-            }
-
+        .cover::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,.03) 40px, rgba(255,255,255,.03) 41px);
+        }
+        .cover::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 90px;
+            background: linear-gradient(to bottom, transparent, var(--paper)); pointer-events: none;
+        }
         .cover-label {
-            position: absolute;
-            bottom: 16px;
-            right: 24px;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: rgba(88,166,255,0.4);
-            font-family: monospace;
-        }
-        /* ── Hero ── */
-        .hero {
-            padding: 0 0 32px;
-            border-bottom: 1px solid var(--border);
+            position: absolute; bottom: 16px; right: 22px; font-size: .7rem; letter-spacing: .15em;
+            text-transform: uppercase; color: rgba(255,255,255,.55); font-family: var(--mono);
         }
 
+        .profile { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 0 28px; border-bottom: 1px solid var(--border); }
+        .avatar-outer { margin-top: -70px; z-index: 1; }
         .avatar-wrap {
-            margin-top: 24px;
-            margin-bottom: 12px;
+            width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--surface);
+            box-shadow: 0 0 0 4px var(--teal), var(--sh-md); overflow: hidden; background: var(--ink-light);
         }
+        .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-text { margin-top: 14px; }
+        .profile-name { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+        .profile-title { font-size: .85rem; color: var(--slate); font-weight: 500; margin-top: 5px; font-family: var(--mono); letter-spacing: .01em; }
+        .profile-tagline { font-size: .78rem; color: var(--teal); font-weight: 500; margin-top: 6px; letter-spacing: .01em; }
 
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-            .avatar img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-            }
-
-        .hero-name {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .hero-title {
-            font-size: 1rem;
-            color: var(--muted);
-            margin-bottom: 6px;
-        }
-
-        .hero-tagline {
-            font-size: 0.875rem;
-            color: var(--accent);
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-
+        .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 18px; }
         .hero-cta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; border-radius: 99px;
+            background: var(--teal); color: #06231f; font-size: .85rem; font-weight: 700;
+            box-shadow: 0 4px 16px color-mix(in srgb, var(--teal) 28%, transparent);
+            transition: transform .15s, box-shadow .15s;
         }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            transition: border-color .15s, color .15s;
+        .hero-cta:hover { transform: translateY(-1px); box-shadow: 0 7px 24px color-mix(in srgb, var(--teal) 45%, transparent); }
+        .pill-cta {
+            display: inline-flex; align-items: center; gap: 7px; padding: 8px 19px; border: 1px solid var(--teal);
+            border-radius: 99px; background: var(--surface); color: var(--ink-light); font-size: .85rem; font-weight: 600;
+            box-shadow: var(--sh-xs); transition: transform .15s, box-shadow .15s;
         }
+        .pill-cta:hover { transform: translateY(-1px); box-shadow: 0 7px 24px color-mix(in srgb, var(--teal) 45%, transparent); }
 
-            .btn:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-                text-decoration: none;
-            }
-
-        .btn-accent {
-            background: rgba(88,166,255,.1);
-            border-color: rgba(88,166,255,.4);
-            color: var(--accent);
-        }
         /* ── Stats ── */
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
-            gap: 8px 0;
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border);
+            border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; margin: 24px 0;
         }
+        .stat-cell { background: var(--surface); padding: 16px 12px; text-align: center; transition: background .15s; text-decoration: none; }
+        .stat-cell:hover { background: var(--accent-bg); }
+        .stat-value { font-size: 1.35rem; font-weight: 700; color: var(--teal); line-height: 1; font-family: var(--mono); letter-spacing: -0.02em; }
+        .stat-label { font-size: .62rem; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--slate); margin-top: 5px; }
+        @media (max-width: 560px) { .stats-bar { grid-template-columns: repeat(2, 1fr); } }
 
-        .stat {
-            padding: 8px 32px 8px 0;
-            min-width: 130px;
+        /* ── Section label ── */
+        .section-label {
+            font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--teal);
+            margin: 36px 0 12px; display: flex; align-items: center; gap: 8px; scroll-margin-top: 64px;
         }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        .stat-value {
-            display: block;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1;
+        /* ── About card ── */
+        .about {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
+            padding: 20px 22px; font-size: .9rem; color: var(--ink-light); line-height: 1.65; box-shadow: var(--sh-xs);
         }
+        .about p { margin-bottom: .7em; }
+        .about .quote { border-left: 3px solid var(--teal); padding-left: 14px; margin: 12px 0; color: var(--ink); font-style: italic; font-size: .88rem; }
+        .about a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+        .about-sub { font-size: .62rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: var(--slate); opacity: .65; margin: 18px 0 4px 2px; }
+        .about-row { display: flex; gap: 11px; align-items: flex-start; padding: 8px 0; }
+        .about-row + .about-row { border-top: 1px solid var(--border); }
+        .about-ic { flex-shrink: 0; width: 22px; text-align: center; font-size: 1.05rem; line-height: 1.5; }
+        .about-row p { margin: 0; font-size: .85rem; line-height: 1.55; }
+        .about-row strong { color: var(--ink); }
+        .about-disclaimer { margin-top: 14px; font-size: .72rem; color: var(--slate); opacity: .7; line-height: 1.5; }
+        .about-jump { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); font-size: .8rem; color: var(--slate); }
+        .about-jump a { color: var(--teal); }
 
-        .stat-label {
-            display: block;
-            font-size: 0.78rem;
-            color: var(--muted);
-            margin-top: 4px;
+        /* ── Projects (collapsible rows) ── */
+        .projects-list details {
+            background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm);
+            margin-bottom: 10px; box-shadow: var(--sh-xs); overflow: hidden;
         }
-        /* ── Jump nav ── */
-        .jump-nav {
-            padding: 14px 0;
-            font-size: 0.875rem;
-            color: var(--muted);
-            border-bottom: 1px solid var(--border);
+        .projects-list summary {
+            padding: 13px 18px; font-weight: 600; font-size: .9rem; cursor: pointer; list-style: none;
+            display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--ink); user-select: none;
         }
+        .projects-list summary::-webkit-details-marker { display: none; }
+        .projects-list summary::after { content: '+'; font-size: 1.2rem; color: var(--teal); flex-shrink: 0; transition: transform .2s; }
+        .projects-list details[open] summary::after { transform: rotate(45deg); }
+        .repo-summary-main { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .repo-icon { font-size: 1rem; line-height: 1; flex-shrink: 0; }
+        .lang-icon { width: 15px; height: 15px; flex-shrink: 0; opacity: .9; }
+        .db { padding: 0 18px 16px; font-size: .85rem; color: var(--ink-light); line-height: 1.65; border-top: 1px solid var(--border); }
+        .db p { margin-top: .65em; }
+        .db a { color: var(--teal); text-decoration: underline; text-underline-offset: 2px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+        .tag { background: var(--accent-bg); border: 1px solid var(--border); color: var(--ink-light); font-size: .72rem; padding: 2px 9px; border-radius: 20px; }
 
-            .jump-nav a {
-                color: var(--muted);
-                margin-right: 14px;
-            }
-
-                .jump-nav a:hover {
-                    color: var(--accent);
-                    text-decoration: none;
-                }
-        /* ── Section title ── */
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 40px 0 18px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
+        /* ── Pills (certifications / tools) ── */
+        .pill-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .pill {
+            display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 99px; padding: 7px 15px 7px 10px; font-size: .8rem; font-weight: 600; color: var(--ink);
+            transition: background .15s, border-color .15s;
         }
-        /* ── About ── */
-        .about p {
-            color: var(--muted);
-            margin-bottom: 14px;
-            font-size: 0.95rem;
-        }
+        .pill:hover { background: var(--accent-bg); border-color: var(--teal); }
+        .pill-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
-        .about strong {
-            color: var(--text);
-        }
-
-        blockquote {
-            border-left: 3px solid var(--accent);
-            padding: 10px 16px;
-            margin: 20px 0;
-            color: var(--muted);
-            font-style: italic;
-            background: var(--bg-card);
-            border-radius: 0 6px 6px 0;
-            font-size: 0.95rem;
-        }
-        /* ── Cards (edu / honor) ── */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px 18px;
-            margin-bottom: 10px;
-        }
-
-            .card h3 {
-                font-size: 0.95rem;
-            }
-
-            .card p {
-                font-size: 0.85rem;
-                color: var(--muted);
-                margin-top: 3px;
-            }
-        /* ── Projects grid ── */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 14px;
-        }
-
-        @media (max-width: 600px) {
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: border-color .15s;
-        }
-
-            .project-card:hover {
-                border-color: var(--accent);
-            }
-
-            .project-card h3 {
-                font-size: 0.95rem;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-                .project-card h3 a {
-                    color: var(--accent);
-                }
-
-            .project-card p {
-                font-size: 0.85rem;
-                color: var(--muted);
-                flex: 1;
-            }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 4px;
-        }
-
-        .tag {
-            background: var(--tag-bg);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            font-size: 0.72rem;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        .lang-icon {
-    width: 16px;
-    height: 16px;
-    margin-left: auto;
-    flex-shrink: 0;
-    opacity: .9;
-}
-        /* ── Certifications ── */
-        .certs-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .cert-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 7px 13px;
-            font-size: 0.85rem;
-            color: var(--text);
-            transition: border-color .15s, color .15s;
-        }
-
-            .cert-badge:hover {
-                border-color: var(--accent);
-                color: var(--accent);
-                text-decoration: none;
-            }
-
-        .cert-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        /* ── Tools ── */
-        .tools-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-        }
-
-        .tool-chip {
-            background: var(--tag-bg);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-        }
         /* ── Links ── */
-        .links-columns {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 32px;
+        .ltr { display: flex; flex-direction: column; gap: 8px; }
+        .ltr-group { font-size: .6rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--slate); opacity: .6; margin: 12px 0 4px 2px; }
+        .ltr-group:first-child { margin-top: 0; }
+        .lti {
+            display: flex; align-items: center; gap: 14px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--r-sm); padding: 10px 14px; box-shadow: var(--sh-xs);
+            transition: transform .15s, box-shadow .15s, border-color .15s;
         }
-
-        .links-group h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            color: var(--muted);
-            margin-bottom: 12px;
+        .lti:hover { transform: translateY(-1px); box-shadow: var(--sh-sm); border-color: var(--teal); }
+        .lti-icon {
+            width: 38px; height: 38px; border-radius: var(--r-sm); overflow: hidden; flex-shrink: 0; background: var(--accent-bg);
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
         }
+        .lti-name { font-weight: 600; font-size: .88rem; color: var(--ink); line-height: 1.3; }
+        .lti-arrow { margin-left: auto; color: var(--slate); font-size: .9rem; flex-shrink: 0; }
 
-        .links-group ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-            .links-group ul li a {
-                color: var(--accent);
-                font-size: 0.9rem;
-            }
-
-                .links-group ul li a::after {
-                    content: " ↗";
-                    font-size: .7em;
-                    opacity: .5;
-                }
         /* ── Footer ── */
-        footer {
-            margin-top: 60px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            font-size: 0.8rem;
-            color: var(--muted);
-            text-align: center;
-            line-height: 1.8;
+        .site-footer { text-align: center; padding: 32px 0 16px; font-size: .75rem; color: var(--slate); border-top: 1px solid var(--border); margin-top: 48px; }
+        .site-footer a { color: var(--teal); }
+        .footer-avatar { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; margin: 0 auto 14px; opacity: .8; border: 1px solid var(--border); }
+        .footer-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ── Floating buttons ── */
+        .theme-btn, .top-btn {
+            position: fixed; right: 20px; z-index: 500; width: 44px; height: 44px; border-radius: 50%;
+            border: 1px solid var(--border); background: var(--surface); color: var(--ink); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; box-shadow: var(--sh-sm);
         }
-
-            footer a {
-                color: var(--muted);
-            }
-
-                footer a:hover {
-                    color: var(--accent);
-                }
-
-        .footer-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            margin: 0 auto 12px;
+        .theme-btn { bottom: 20px; font-size: 1.2rem; transition: transform .15s, border-color .15s; }
+        .theme-btn:hover { transform: scale(1.1); border-color: var(--teal); }
+        .top-btn {
+            bottom: 72px; font-size: 1.1rem; opacity: 0; pointer-events: none; transform: translateY(8px);
+            transition: opacity .3s, transform .3s, border-color .15s;
         }
+        .top-btn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .top-btn:hover { border-color: var(--teal); }
+        .icon-sun { display: none; }
+        .icon-moon { display: block; }
+        html.dark .icon-sun { display: block; }
+        html.dark .icon-moon { display: none; }
 
-            .footer-avatar img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-            }
-        /* ── Theme toggle & back-to-top ── */
-        #top-btn {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            padding: 10px 12px;
-            border-radius: 6px;
-            border: none;
-            background: var(--btn-bg, var(--bg-card));
-            color: var(--btn-color, var(--text));
-            font-size: 18px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity .25s, transform .25s;
-            z-index: 999;
-        }
+        /* ── Reveal-on-scroll ── */
+        .reveal { opacity: 0; transform: translateY(16px); transition: opacity .5s, transform .5s; }
+        .reveal.in { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
-            #top-btn.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        #theme-toggle {
-            position: fixed;
-            left: 20px;
-            bottom: 20px;
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            padding: 6px;
-            border-radius: 8px;
-            background: var(--ui-bg, var(--bg-card));
-            box-shadow: 0 2px 8px rgba(0,0,0,.15);
-            z-index: 999;
-        }
-
-            #theme-toggle button {
-                border: 0;
-                background: transparent;
-                cursor: pointer;
-                font-size: 18px;
-                padding: 6px;
-                border-radius: 6px;
-                color: inherit;
-            }
-
-                #theme-toggle button[aria-pressed="true"] {
-                    background: rgba(255,255,255,0.08);
-                }
-
-        [data-theme="light"] {
-            --bg: #ffffff;
-            --bg-card: #f7f9fb;
-            --bg-hover: #eef3f7;
-            --text: #111111;
-            --muted: #555555;
-            --accent: #065fd4;
-            --border: #e6e6e6;
-            --tag-bg: #f0f3f6;
-            --ui-bg: rgba(255,255,255,0.95);
-            --btn-bg: #222222;
-            --btn-color: #ffffff;
-        }
-
-        [data-theme="dark"] {
-            --bg: #0d1117;
-            --bg-card: #161b22;
-            --bg-hover: #1f2937;
-            --text: #e6edf3;
-            --muted: #8b949e;
-            --accent: #58a6ff;
-            --border: #30363d;
-            --tag-bg: #21262d;
-            --ui-bg: rgba(0,0,0,0.45);
-            --btn-bg: #e6e6e6;
-            --btn-color: #0b0d10;
-        }
-
-        @media (max-width:520px) {
-            #theme-toggle {
-                left: 12px;
-                bottom: 14px;
-            }
-
-            #top-btn {
-                right: 12px;
-                bottom: 14px;
-            }
+        @media (max-width: 480px) {
+            .profile-name { font-size: 1.35rem; }
+            .cover { height: 170px; }
+            .avatar-wrap { width: 104px; height: 104px; }
+            .avatar-outer { margin-top: -50px; }
         }
     </style>
 </head>
 <body>
-    <!-- Cover -->
-    <div class="cover">
-        <div class="cover-label">SOC · DFIR · Digital Forensics</div>
-    </div>
-    <!-- Hero -->
-    <section class="hero">
-        <div class="avatar-wrap">
-            <div class="avatar">
-                <img src="imgs/profile.jpg" alt="Dielle De Noon" />
-            </div>
+    <div id="scroll-progress"></div>
+    <nav id="sticky-nav" aria-label="Section navigation">
+        <span class="sn-name">Dielle De Noon</span>
+        <div class="sn-right">
+            <span class="sn-links">
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#certifications">Certifications</a>
+                <a href="#links-section">Links</a>
+            </span>
+            <a class="sn-cta" href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank" rel="noopener noreferrer">Connect</a>
         </div>
-        <div class="hero-name">Dielle De Noon</div>
-        <div class="hero-title">Cybersecurity Graduate Student · SOC | DFIR | Digital Forensics</div>
-        <div class="hero-tagline">Contributor to iLEAPP &amp; ALEAPP · WGU · CompTIA Stack · Open Source</div>
-        <div class="hero-cta">
-            <a class="btn btn-accent" href="https://github.com/Gear-I/VeriTrace" target="_blank" rel="noopener">🔍 VeriTrace</a>
-            <a class="btn" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener">🏅 9+ Certifications</a>
-            <a class="btn" href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener">📝 Research Blog</a>
-        </div>
-    </section>
-    <!-- Stats -->
-    <section class="stats">
-        <div class="stat">
-            <span class="stat-value" id="repo-count">--</span>
-            <span class="stat-label">Public Repositories</span>
-        </div>
-        <div class="stat">
-            <span class="stat-value">9+</span>
-            <span class="stat-label">Certifications</span>
-        </div>
-        <div class="stat">
-            <span class="stat-value">2+</span>
-            <span class="stat-label">Years in Cybersecurity</span>
-        </div>
-    </section>
-    <!-- Jump nav -->
-    <nav class="jump-nav">
-        Jump to:
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#certifications">Certifications</a>
-        <a href="#tools">Tools</a>
-        <a href="#links-section">Links</a>
     </nav>
-    <!-- About -->
-    <section id="about" class="about">
-        <h2 class="section-title">About</h2>
-        <p>
-            Cybersecurity professional and digital forensics analyst focused on evidence-driven investigations, artifact analysis, and open-source forensic tooling. I contribute to the LEAPPs Digital Forensics Platform and develop DFIR-focused projects that support forensic analysis, artifact validation, and anti-forensics detection.
-            My work combines hands-on security administration experience, threat intelligence research, homelab experimentation, and digital forensic investigations. I am particularly interested in Windows forensics, mobile device forensics, incident response, and the development of tools that help investigators validate and correlate digital evidence.
-        </p>
-        <blockquote>
-            "Follow the timeline. Validate the artifacts. Let the evidence tell the story".
-        </blockquote>
-        <p>Opinions are mine only, subject to change, and does not represent anyone else.</p>
-        <p>
-            Contributor to the <strong>LEAPPs Digital Forensics Python Platform</strong> —
-            open-source tools for iOS and Android forensics.
-            Research notes at <a href="https://ddenoon.blogspot.com/" target="_blank">ddenoon.blogspot.com</a>
-            and <a href="https://medium.com/@mxrdvwvn" target="_blank">Medium</a>.
-            All certifications on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">Credly</a>.
-        </p>
-        <h2 class="section-title">Education</h2>
-        <div class="card">
-            <h3>M.S. Cybersecurity and Information Assurance</h3>
-            <p>Western Governors University · Completed August 2026</p>
+
+    <div class="page">
+        <!-- Cover -->
+        <div class="cover">
+            <div class="cover-label">SOC · DFIR · Digital Forensics</div>
         </div>
-        <div class="card">
-            <h3>B.S. Cybersecurity and Information Assurance</h3>
-            <p>Western Governors University · Completed November 2025</p>
-        </div>
-    </section>
-    <!-- Projects -->
-    <section id="projects">
-        <h2 class="section-title">Projects &amp; Repositories</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-         </div>
-        </div>
-        <p style="margin-top:18px;font-size:0.85rem;color:var(--muted);">
-            All repositories → <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a>
-        </p>
-    </section>
-    <!-- Certifications -->
-    <section id="certifications">
-        <h2 class="section-title">Certifications</h2>
-        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:16px;">
-            All verified on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">Credly ↗</a>
-        </p>
-        <div class="certs-grid">
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#E00000"></span>CompTIA A+</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#E00000"></span>CompTIA Network+</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#E00000"></span>CompTIA Security+</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#E00000"></span>CompTIA CySA+</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#E00000"></span>CompTIA Pentest+</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#4285F4"></span>Google IT Support Professional</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#34A853"></span>Google Cybersecurity Professional</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#FBBC05"></span>Google AI Essentials</a>
-            <a class="cert-badge" href="https://www.credly.com/users/dielle-de-noon" target="_blank"><span class="cert-dot" style="background:#1E88E5"></span>AttackIQ Cyber Threat Intelligence</a>
-        </div>
-    </section>
-    <!-- Honors -->
-    <section id="honors">
-        <h2 class="section-title">Honors &amp; Memberships</h2>
-        <div class="card">
-            <h3>🏅 Excellence Award — Legal Issues in Information Security</h3>
-            <p>Western Governors University</p>
-        </div>
-        <div class="card">
-            <h3>👩‍🎓 Member — WGU Cybersecurity Club</h3>
-            <p>Western Governors University</p>
-        </div>
-    </section>
-    <!-- Links -->
-    <section id="links-section">
-        <h2 class="section-title">Links</h2>
-        <div class="links-columns">
-            <div class="links-group">
-                <h3>Platforms</h3>
-                <ul>
-                    <li><a href="https://github.com/Gear-I" target="_blank">GitHub</a></li>
-                    <li><a href="https://www.credly.com/users/dielle-de-noon" target="_blank">Credly — Certifications</a></li>
-                </ul>
+
+        <!-- Profile -->
+        <div class="profile">
+            <div class="avatar-outer">
+                <div class="avatar-wrap">
+                    <img src="imgs/profile.jpg" alt="Dielle De Noon" />
+                </div>
             </div>
-            <div class="links-group">
-                <h3>Content</h3>
-                <ul>
-                    <li><a href="https://ddenoon.blogspot.com/" target="_blank">Blog — Research &amp; Notes</a></li>
-                    <li><a href="https://medium.com/@mxrdvwvn" target="_blank">Medium — Articles</a></li>
-                </ul>
+            <div class="profile-text">
+                <div class="profile-name">Dielle De Noon</div>
+                <div class="profile-title">Cybersecurity Graduate Student · SOC | DFIR | Digital Forensics</div>
+                <div class="profile-tagline">Contributor to iLEAPP &amp; ALEAPP · WGU · CompTIA Stack · Open Source</div>
             </div>
-            <div class="links-group">
-                <h3>Social</h3>
-                <ul>
-                    <li><a href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank">LinkedIn</a></li>
-                    <li><a href="https://github.com/Gear-I" target="_blank">GitHub</a></li>
-                    <li><a href="https://infosec.exchange/@ddenoon" target="_blank">InfoSec Exchange</a></li>
-                </ul>
-            </div>
-            <div class="links-group">
-                <h3>Resources</h3>
-                <ul>
-                    <li><a href="https://github.com/abrignoni/iLEAPP" target="_blank">iLEAPP (upstream)</a></li>
-                    <li><a href="https://github.com/abrignoni/ALEAPP" target="_blank">ALEAPP (upstream)</a></li>
-                    <li><a href="https://www.leapps.org/releases" target="_blank">LEAPPs Releases</a></li>
-                </ul>
+            <div class="hero-actions">
+                <a class="hero-cta" href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+                <a class="pill-cta" href="https://github.com/Gear-I/VeriTrace" target="_blank" rel="noopener noreferrer">🔍 VeriTrace</a>
+                <a class="pill-cta" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer">🏅 9+ Certifications</a>
+                <a class="pill-cta" href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener noreferrer">📝 Research Blog</a>
             </div>
         </div>
-    </section>
-    <!-- Footer -->
-    <footer>
-        <p>Dielle De Noon · Cybersecurity &amp; Digital Forensics · Open Source Contributor</p>
-        <p>
-            <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a> ·
-            <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">credly.com/users/dielle-de-noon</a> ·
-            <a href="https://ddenoon.blogspot.com/" target="_blank">ddenoon.blogspot.com</a>
+
+        <!-- Stats -->
+        <div class="stats-bar reveal in" role="region" aria-label="Stats">
+            <a class="stat-cell" href="https://github.com/Gear-I" target="_blank" rel="noopener noreferrer">
+                <div class="stat-value" id="stat-repos">--</div>
+                <div class="stat-label">Public Repos</div>
+            </a>
+            <a class="stat-cell" href="https://github.com/Gear-I" target="_blank" rel="noopener noreferrer">
+                <div class="stat-value" id="stat-stars">--</div>
+                <div class="stat-label">GitHub Stars</div>
+            </a>
+            <a class="stat-cell" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer">
+                <div class="stat-value">9+</div>
+                <div class="stat-label">Certifications</div>
+            </a>
+            <div class="stat-cell">
+                <div class="stat-value">2+</div>
+                <div class="stat-label">Years in Cybersecurity</div>
+            </div>
+        </div>
+
+        <!-- About -->
+        <div class="section-label reveal in" id="about">About</div>
+        <div class="about reveal in">
+            <p>
+                Cybersecurity professional and digital forensics analyst focused on evidence-driven investigations, artifact analysis, and open-source forensic tooling. I contribute to the LEAPPs Digital Forensics Platform and develop DFIR-focused projects that support forensic analysis, artifact validation, and anti-forensics detection.
+            </p>
+            <p>
+                My work combines hands-on security administration experience, threat intelligence research, homelab experimentation, and digital forensic investigations. I am particularly interested in Windows forensics, mobile device forensics, incident response, and the development of tools that help investigators validate and correlate digital evidence.
+            </p>
+            <p class="quote">"Follow the timeline. Validate the artifacts. Let the evidence tell the story".</p>
+
+            <div class="about-sub">Credentials</div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">🎓</span><p><strong>M.S. Cybersecurity and Information Assurance</strong> — Western Governors University · Completed August 2026</p></div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">🎓</span><p><strong>B.S. Cybersecurity and Information Assurance</strong> — Western Governors University · Completed November 2025</p></div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">🏅</span><p><strong>Excellence Award</strong> — Legal Issues in Information Security, Western Governors University</p></div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">👩‍🎓</span><p><strong>Member</strong> — WGU Cybersecurity Club</p></div>
+
+            <div class="about-sub">What I Do</div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">🌋</span><p><strong>LEAPPs</strong> — Contributor to the open-source LEAPPs Digital Forensics Python Platform for iOS and Android forensics.</p></div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">✍️</span><p><strong>Research Blog</strong> — Notes at <a href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener noreferrer">ddenoon.blogspot.com</a> and <a href="https://medium.com/@mxrdvwvn" target="_blank" rel="noopener noreferrer">Medium</a>.</p></div>
+            <div class="about-row"><span class="about-ic" aria-hidden="true">🏅</span><p><strong>Certifications</strong> — All verified on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer">Credly</a>.</p></div>
+
+            <p class="about-disclaimer">Opinions are mine only, subject to change, and does not represent anyone else.</p>
+            <p class="about-jump">
+                Jump to:
+                <a href="#projects">Projects</a> ·
+                <a href="#certifications">Certifications</a> ·
+                <a href="#links-section">Links</a>
+            </p>
+        </div>
+
+        <!-- Projects -->
+        <div class="section-label reveal in" id="projects">Projects &amp; Repositories</div>
+        <div class="projects-list"></div>
+        <p style="margin-top:8px;font-size:0.85rem;color:var(--slate);">
+            All repositories → <a href="https://github.com/Gear-I" target="_blank" style="color:var(--teal);text-decoration:underline;">github.com/Gear-I</a>
         </p>
-        <p style="margin-top:10px;">© 2026</p>
-    </footer>
-    <!-- Back to top -->
-    <button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
-    <!-- Theme chooser -->
-    <div id="theme-toggle" role="group" aria-label="Theme switch">
-        <button id="light-btn" aria-pressed="false" title="Light theme">☀️</button>
-        <button id="dark-btn" aria-pressed="false" title="Dark theme">🌙</button>
+
+        <!-- Certifications -->
+        <div class="section-label reveal in" id="certifications">Certifications</div>
+        <p style="font-size:0.85rem;color:var(--slate);margin-bottom:12px;">
+            All verified on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank" style="color:var(--teal);text-decoration:underline;">Credly ↗</a>
+        </p>
+        <div class="pill-grid reveal in">
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#E00000"></span>CompTIA A+</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#E00000"></span>CompTIA Network+</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#E00000"></span>CompTIA Security+</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#E00000"></span>CompTIA CySA+</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#E00000"></span>CompTIA Pentest+</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#4285F4"></span>Google IT Support Professional</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#34A853"></span>Google Cybersecurity Professional</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#FBBC05"></span>Google AI Essentials</a>
+            <a class="pill" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer"><span class="pill-dot" style="background:#1E88E5"></span>AttackIQ Cyber Threat Intelligence</a>
+        </div>
+
+        <!-- Links -->
+        <div class="section-label reveal in" id="links-section">Links</div>
+        <div class="ltr reveal in">
+            <div class="ltr-group">Platforms</div>
+            <a class="lti" href="https://github.com/Gear-I" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">🐙</div>
+                <div class="lti-name">GitHub</div><span class="lti-arrow">↗</span>
+            </a>
+            <a class="lti" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">🏅</div>
+                <div class="lti-name">Credly — Certifications</div><span class="lti-arrow">↗</span>
+            </a>
+
+            <div class="ltr-group">Content</div>
+            <a class="lti" href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">✍️</div>
+                <div class="lti-name">Blog — Research &amp; Notes</div><span class="lti-arrow">↗</span>
+            </a>
+            <a class="lti" href="https://medium.com/@mxrdvwvn" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">📝</div>
+                <div class="lti-name">Medium — Articles</div><span class="lti-arrow">↗</span>
+            </a>
+
+            <div class="ltr-group">Social</div>
+            <a class="lti" href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">💼</div>
+                <div class="lti-name">LinkedIn</div><span class="lti-arrow">↗</span>
+            </a>
+            <a class="lti" href="https://infosec.exchange/@ddenoon" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">🐘</div>
+                <div class="lti-name">InfoSec Exchange</div><span class="lti-arrow">↗</span>
+            </a>
+
+            <div class="ltr-group">Resources</div>
+            <a class="lti" href="https://github.com/abrignoni/iLEAPP" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">📱</div>
+                <div class="lti-name">iLEAPP (upstream)</div><span class="lti-arrow">↗</span>
+            </a>
+            <a class="lti" href="https://github.com/abrignoni/ALEAPP" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">🤖</div>
+                <div class="lti-name">ALEAPP (upstream)</div><span class="lti-arrow">↗</span>
+            </a>
+            <a class="lti" href="https://www.leapps.org/releases" target="_blank" rel="noopener noreferrer">
+                <div class="lti-icon" aria-hidden="true">🌋</div>
+                <div class="lti-name">LEAPPs Releases</div><span class="lti-arrow">↗</span>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="site-footer reveal in">
+            <div class="footer-avatar"><img src="imgs/profile.jpg" alt="Dielle De Noon" /></div>
+            <p>Dielle De Noon · Cybersecurity &amp; Digital Forensics · Open Source Contributor</p>
+            <p style="margin-top:8px;">
+                <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a> ·
+                <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">credly.com/users/dielle-de-noon</a> ·
+                <a href="https://ddenoon.blogspot.com/" target="_blank">ddenoon.blogspot.com</a>
+            </p>
+            <p style="margin-top:8px;">© <span id="footer-year">2026</span></p>
+        </footer>
     </div>
+
+    <!-- Floating buttons -->
+    <button class="top-btn" id="top-btn" aria-label="Back to top">↑</button>
+    <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="icon-moon">🌙</span>
+        <span class="icon-sun">☀️</span>
+    </button>
 
     <script src="repos.js"></script>
     <script>
-        // ── Back-to-top behavior ──
-        const btn = document.getElementById('top-btn');
-        window.addEventListener('scroll', () => {
-        btn.classList.toggle('visible', window.scrollY > 300);
-        });
-
-        // ── Theme chooser behavior ──
+        // ── Theme toggle ──
         const root = document.documentElement;
-        const lightBtn = document.getElementById('light-btn');
-        const darkBtn = document.getElementById('dark-btn');
         const THEME_KEY = 'theme';
         function applyTheme(theme) {
-        root.setAttribute('data-theme', theme);
-        localStorage.setItem(THEME_KEY, theme);
-        lightBtn.setAttribute('aria-pressed', theme === 'light');
-        darkBtn.setAttribute('aria-pressed', theme === 'dark');
+            root.classList.toggle('dark', theme === 'dark');
+            localStorage.setItem(THEME_KEY, theme);
         }
         (function initTheme() {
-        const saved = localStorage.getItem(THEME_KEY);
-        if (saved === 'light' || saved === 'dark') {
-        applyTheme(saved);
-        return;
-        }
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        applyTheme(prefersDark ? 'dark' : 'light');
+            const saved = localStorage.getItem(THEME_KEY);
+            if (saved === 'light' || saved === 'dark') { applyTheme(saved); return; }
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(prefersDark ? 'dark' : 'light');
         })();
-        lightBtn.addEventListener('click', () => applyTheme('light'));
-        darkBtn.addEventListener('click', () => applyTheme('dark'));
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            applyTheme(root.classList.contains('dark') ? 'light' : 'dark');
+        });
+
+        // ── Footer year ──
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+        // ── Scroll progress, sticky nav, back-to-top ──
+        const progressEl = document.getElementById('scroll-progress');
+        const stickyNav = document.getElementById('sticky-nav');
+        const topBtn = document.getElementById('top-btn');
+        const navLinks = document.querySelectorAll('.sn-links a');
+        const sections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute('href')));
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            progressEl.style.setProperty('--scroll', docHeight > 0 ? scrollTop / docHeight : 0);
+            stickyNav.classList.toggle('show', scrollTop > 300);
+            topBtn.classList.toggle('visible', scrollTop > 300);
+
+            let current = null;
+            sections.forEach(sec => {
+                if (sec && sec.getBoundingClientRect().top < 100) current = sec;
+            });
+            navLinks.forEach(a => a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id));
+        }, { passive: true });
+
+        topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // ── Reveal-on-scroll for anything added later ──
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('in'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal:not(.in)').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
