@@ -119,7 +119,7 @@
             width: 140px; height: 140px; border-radius: 50%; border: 4px solid var(--surface);
             box-shadow: 0 0 0 4px var(--teal), var(--sh-md); overflow: hidden; background: var(--ink-light);
         }
-        .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-wrap img { width: 100%; height: 100%; object-fit: contain; }
         .profile-text { margin-top: 14px; }
         .profile-name { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
         .profile-title { font-size: .85rem; color: var(--slate); font-weight: 500; margin-top: 5px; font-family: var(--mono); letter-spacing: .01em; }
@@ -139,6 +139,7 @@
             box-shadow: var(--sh-xs); transition: transform .15s, box-shadow .15s;
         }
         .pill-cta:hover { transform: translateY(-1px); box-shadow: 0 7px 24px color-mix(in srgb, var(--teal) 45%, transparent); }
+        button.pill-cta { font-family: inherit; }
 
         /* ── Stats ── */
         .stats-bar {
@@ -228,7 +229,7 @@
         .site-footer { text-align: center; padding: 32px 0 16px; font-size: .75rem; color: var(--slate); border-top: 1px solid var(--border); margin-top: 48px; }
         .site-footer a { color: var(--teal); }
         .footer-avatar { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; margin: 0 auto 14px; opacity: .8; border: 1px solid var(--border); }
-        .footer-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .footer-avatar img { width: 100%; height: 100%; object-fit: contain; }
 
         /* ── Floating buttons ── */
         .theme-btn, .top-btn {
@@ -259,6 +260,31 @@
             .cover { height: 170px; }
             .avatar-wrap { width: 104px; height: 104px; }
             .avatar-outer { margin-top: -50px; }
+        }
+
+        /* ── Print / Save-as-PDF ── */
+        @media print {
+            #sticky-nav, #scroll-progress, .theme-btn, .top-btn, .cover, .hero-actions, .about-jump { display: none !important; }
+            body::before { display: none !important; }
+            html, body { font-size: 11pt; background: #fff !important; color: #111 !important; }
+            * { box-shadow: none !important; text-shadow: none !important; transition: none !important; animation: none !important; }
+            .page { max-width: 100% !important; padding: 0 !important; }
+            .avatar-outer { margin-top: 0 !important; }
+            .profile { border-bottom: none !important; padding-bottom: 6px !important; }
+            .avatar-wrap { width: 90px !important; height: 90px !important; box-shadow: none !important; border: 2px solid #111 !important; }
+            .profile-name { color: #111 !important; }
+            .profile-title, .profile-tagline, .stat-label, .about-sub, .ltr-group { color: #333 !important; }
+            .stats-bar { border-color: #bbb !important; margin: 14px 0 !important; }
+            .stat-cell { background: #fff !important; }
+            .stat-value { color: #111 !important; }
+            .section-label { color: #111 !important; display: flex !important; }
+            .section-label::after { display: none !important; }
+            .about, .projects-list details, .pill, .lti { background: #fff !important; border-color: #ccc !important; box-shadow: none !important; }
+            .about-row, .projects-list details, .lti { break-inside: avoid; }
+            summary::after { display: none !important; }
+            a, .about a, .db a, .lti-name { color: #111 !important; text-decoration: none !important; }
+            .lti-arrow { display: none !important; }
+            .site-footer { border-color: #ccc !important; color: #555 !important; margin-top: 20px !important; }
         }
     </style>
 </head>
@@ -297,9 +323,10 @@
             </div>
             <div class="hero-actions">
                 <a class="hero-cta" href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
-                <a class="pill-cta" href="https://github.com/Gear-I/VeriTrace" target="_blank" rel="noopener noreferrer">🔍 VeriTrace</a>
+                <a class="pill-cta" href="https://github.com/Gear-I/Corrobora" target="_blank" rel="noopener noreferrer">🔍 Corrobora</a>
                 <a class="pill-cta" href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer">🏅 9+ Certifications</a>
                 <a class="pill-cta" href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener noreferrer">📝 Research Blog</a>
+                <button type="button" id="pdf-btn" class="pill-cta" title="Save this page as a PDF résumé">📄 Save as PDF</button>
             </div>
         </div>
 
@@ -463,6 +490,23 @@
         })();
         document.getElementById('theme-toggle').addEventListener('click', () => {
             applyTheme(root.classList.contains('dark') ? 'light' : 'dark');
+        });
+
+        // ── Save as PDF ──
+        // Closed <details> content isn't just display:none in Chromium — it isn't
+        // rendered at all — so a CSS @media print override can't reveal it. Force
+        // every repo row open right before printing, then restore whatever state
+        // it had before.
+        document.getElementById('pdf-btn').addEventListener('click', () => window.print());
+        let repoOpenState = [];
+        window.addEventListener('beforeprint', () => {
+            const rows = document.querySelectorAll('.projects-list details');
+            repoOpenState = Array.from(rows).map(d => d.hasAttribute('open'));
+            rows.forEach(d => d.setAttribute('open', ''));
+        });
+        window.addEventListener('afterprint', () => {
+            const rows = document.querySelectorAll('.projects-list details');
+            rows.forEach((d, i) => { if (!repoOpenState[i]) d.removeAttribute('open'); });
         });
 
         // ── Footer year ──
