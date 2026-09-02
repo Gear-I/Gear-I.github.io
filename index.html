@@ -177,6 +177,18 @@
         .about-jump { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); font-size: .8rem; color: var(--slate); }
         .about-jump a { color: var(--teal); }
 
+        /* ── Featured project ── */
+        .featured-project {
+            background: var(--surface); border: 1px solid var(--teal); border-radius: var(--r-lg);
+            padding: 30px 26px; text-align: center;
+            box-shadow: 0 0 0 1px color-mix(in srgb, var(--teal) 22%, transparent), var(--sh-md);
+        }
+        .featured-icon { font-size: 2rem; line-height: 1; margin-bottom: 8px; }
+        .featured-name { font-size: 1.35rem; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+        .featured-tagline { font-size: .85rem; font-weight: 600; color: var(--teal); margin-top: 5px; font-family: var(--mono); letter-spacing: .01em; }
+        .featured-desc { font-size: .88rem; color: var(--ink-light); line-height: 1.65; margin: 16px auto 0; max-width: 560px; }
+        .featured-actions { margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+
         /* ── Projects (collapsible rows) ── */
         .projects-list details {
             background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-sm);
@@ -388,17 +400,34 @@
             <div class="about-row"><span class="about-ic" aria-hidden="true">👩‍🎓</span><p><strong>Member</strong> — WGU Cybersecurity Club</p></div>
 
             <div class="about-sub">What I Do</div>
-            <div class="about-row"><span class="about-ic" aria-hidden="true">🌋</span><p><strong>LEAPPs</strong> — Contributor to the open-source LEAPPs Digital Forensics Python Platform for iOS and Android forensics.</p></div>
             <div class="about-row"><span class="about-ic" aria-hidden="true">✍️</span><p><strong>Research Blog</strong> — Notes at <a href="https://ddenoon.blogspot.com/" target="_blank" rel="noopener noreferrer">ddenoon.blogspot.com</a> and <a href="https://medium.com/@mxrdvwvn" target="_blank" rel="noopener noreferrer">Medium</a>.</p></div>
             <div class="about-row"><span class="about-ic" aria-hidden="true">🏅</span><p><strong>Certifications</strong> — All verified on <a href="https://www.credly.com/users/dielle-de-noon" target="_blank" rel="noopener noreferrer">Credly</a>.</p></div>
 
             <p class="about-disclaimer">Opinions are mine only, subject to change, and does not represent anyone else.</p>
             <p class="about-jump">
                 Jump to:
+                <a href="#featured-project">Featured Project</a> ·
                 <a href="#projects">Projects</a> ·
                 <a href="#certifications">Certifications</a> ·
                 <a href="#links-section">Links</a>
             </p>
+        </div>
+
+        <!-- Featured Project -->
+        <div class="section-label reveal in" id="featured-project">Featured Project</div>
+        <div class="featured-project reveal in">
+            <div class="featured-icon" aria-hidden="true">🛡️</div>
+            <div class="featured-name">Corrobora</div>
+            <div class="featured-tagline">Cross-Artifact Validation Framework</div>
+            <p class="featured-desc">
+                An open-source DFIR research and development project exploring methods for identifying
+                relationships and inconsistencies across forensic artifacts. Designed around evidence
+                normalization, artifact correlation, timeline analysis, and validation of findings
+                across independent evidence sources.
+            </p>
+            <div class="featured-actions">
+                <a class="hero-cta" href="https://github.com/Gear-I/Corrobora" target="_blank" rel="noopener noreferrer">🐙 GitHub Repository</a>
+            </div>
         </div>
 
         <!-- Projects -->
@@ -462,7 +491,7 @@
         <!-- Footer -->
         <footer class="site-footer reveal in">
             <div class="footer-avatar"><img src="imgs/profile.jpg" alt="Dielle De Noon" /></div>
-            <p>Dielle De Noon · Cybersecurity Professional &amp; Digital Forensics · Open Source Contributor</p>
+            <p>Dielle De Noon · Cybersecurity Professional · DFIR · Open-Source Developer</p>
             <p style="margin-top:8px;">
                 <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a> ·
                 <a href="https://www.credly.com/users/dielle-de-noon" target="_blank">credly.com/users/dielle-de-noon</a> ·
