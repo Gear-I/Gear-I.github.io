@@ -3,7 +3,7 @@
 // Repos to exclude from the portfolio display (case-insensitive match on repo name).
 // These stay public on GitHub — they're just not shown here.
 // Add more names to this list to hide additional repos.
-const HIDDEN_REPOS = ['gear-i.github.io', 'ileapp', 'aleapp', 'dleapp'];
+const HIDDEN_REPOS = ['gear-i.github.io', 'ileapp', 'aleapp', 'dleapp', 'plaso', 'velociraptor', 'corrobora'];
 
 // Per-repo icon shown next to the name (case-insensitive match on repo name).
 // Add an entry here any time you want a specific repo to get its own icon —
