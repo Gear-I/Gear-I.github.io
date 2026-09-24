@@ -3,11 +3,67 @@
 // Repos to exclude from the portfolio display (case-insensitive match on repo name).
 // These stay public on GitHub — they're just not shown here.
 // Add more names to this list to hide additional repos.
-const HIDDEN_REPOS = ['gear-i.github.io'];
+const HIDDEN_REPOS = ['gear-i.github.io', 'ileapp', 'aleapp', 'dleapp', 'plaso', 'velociraptor', 'corrobora'];
+
+// Per-repo icon shown next to the name (case-insensitive match on repo name).
+// Add an entry here any time you want a specific repo to get its own icon —
+// anything not listed falls back to DEFAULT_REPO_ICON.
+const REPO_ICONS = {
+    'aleapp': '🤖',
+    'ileapp': '📱',
+    'dleapp': '🖥️',
+    'corrobora': '🛡️',
+    'plaso': '⏱️',
+    'velociraptor': '🦖',
+    'browser_ai': '🌐',
+    'cyberhawk_enumerator': '🦅',
+    'passgen': '🔑',
+    'public-test-data': '🔍',
+};
+const DEFAULT_REPO_ICON = '📦';
+
+// Maps GitHub's repo.language values to Simple Icons slugs (simpleicons.org)
+// for the small tech-logo icon on each project row. Unmapped languages just
+// skip the icon — add more entries here as needed.
+const LANGUAGE_ICONS = {
+    'JavaScript': 'javascript',
+    'TypeScript': 'typescript',
+    'Python': 'python',
+    'Java': 'openjdk',
+    'C': 'c',
+    'C++': 'cplusplus',
+    'C#': 'csharp',
+    'Go': 'go',
+    'Rust': 'rust',
+    'Ruby': 'ruby',
+    'PHP': 'php',
+    'Swift': 'swift',
+    'Kotlin': 'kotlin',
+    'Dart': 'dart',
+    'HTML': 'html5',
+    'CSS': 'css3',
+    'Shell': 'gnubash',
+    'PowerShell': 'powershell',
+    'Jupyter Notebook': 'jupyter',
+    'Vue': 'vuedotjs',
+    'R': 'r',
+    'Perl': 'perl',
+    'Scala': 'scala',
+    'Lua': 'lua',
+    'Dockerfile': 'docker',
+    'Objective-C': 'apple',
+};
+
+function languageIconHTML(language) {
+    const slug = language && LANGUAGE_ICONS[language];
+    if (!slug) return '';
+    return `<img class="lang-icon" src="https://cdn.simpleicons.org/${slug}" alt="${language}" title="${language}" onerror="this.remove()" />`;
+}
 
 async function fetchGitHubRepos() {
-    const projectGrid = document.querySelector('.projects-grid');
-    const repoCountEl = document.getElementById('repo-count');
+    const projectList = document.querySelector('.projects-list');
+    const repoCountEl = document.getElementById('stat-repos');
+    const starsEl = document.getElementById('stat-stars');
     const workerUrl = 'https://gear.ddenoon748.workers.dev';
     try {
         const response = await fetch(workerUrl);
@@ -18,27 +74,38 @@ async function fetchGitHubRepos() {
         const visibleRepos = repos.filter(repo => !HIDDEN_REPOS.includes(repo.name.toLowerCase()));
 
         if (repoCountEl) repoCountEl.textContent = visibleRepos.length;
+        if (starsEl) {
+            const totalStars = visibleRepos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+            starsEl.textContent = totalStars;
+        }
 
-        projectGrid.innerHTML = '';
+        projectList.innerHTML = '';
         visibleRepos.forEach(repo => {
-            const card = document.createElement('div');
-            card.className = 'project-card';
+            const details = document.createElement('details');
+            details.className = 'reveal in';
+            const repoIcon = REPO_ICONS[repo.name.toLowerCase()] || DEFAULT_REPO_ICON;
             const tagsHTML = repo.topics && repo.topics.length > 0
                 ? repo.topics.map(topic => `<span class="tag">${topic}</span>`).join('')
-                : `<span class="tag">${repo.language || 'Project'}</span>`;
-            card.innerHTML = `
-                <h3>
-                    <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" fill="currentColor" style="color: var(--muted);"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1V9h-8c-.356 0-.694.074-1 .208V2.5a1 1 0 0 1 1-1h8Z"></path></svg>
-                    <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">${repo.name}</a>
-                </h3>
-                <p>${repo.description || 'No description provided.'}</p>
-                <div class="tags">${tagsHTML}</div>
+                : '';
+            details.innerHTML = `
+                <summary>
+                    <span class="repo-summary-main">
+                        <span class="repo-icon" aria-hidden="true">${repoIcon}</span>
+                        ${repo.name}
+                        ${languageIconHTML(repo.language)}
+                    </span>
+                </summary>
+                <div class="db">
+                    <p>${repo.description || 'No description provided.'}</p>
+                    ${tagsHTML ? `<div class="tags">${tagsHTML}</div>` : ''}
+                    <p><a href="${repo.html_url}" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a></p>
+                </div>
             `;
-            projectGrid.appendChild(card);
+            projectList.appendChild(details);
         });
     } catch (error) {
         console.error('Error fetching data through proxy:', error);
-        projectGrid.innerHTML = '<p style="color: var(--muted); font-size: 0.85rem;">Failed to load project items.</p>';
+        projectList.innerHTML = '<p style="color: var(--slate); font-size: 0.85rem;">Failed to load project items.</p>';
     }
 }
 document.addEventListener('DOMContentLoaded', fetchGitHubRepos);
