@@ -239,6 +239,21 @@
                 color: var(--muted);
                 margin-top: 3px;
             }
+        /* ── Publications ── */
+        .publication-card {
+            display: block;
+            color: var(--text);
+            transition: border-color .15s;
+        }
+
+            .publication-card:hover {
+                border-color: var(--accent);
+                text-decoration: none;
+            }
+
+                .publication-card:hover h3 {
+                    color: var(--accent);
+                }
         /* ── Projects grid ── */
         .projects-grid {
             display: grid;
@@ -545,6 +560,7 @@
         Jump to:
         <a href="#about">About</a>
         <a href="#projects">Projects</a>
+        <a href="#publications">Publications</a>
         <a href="#certifications">Certifications</a>
         <a href="#tools">Tools</a>
         <a href="#links-section">Links</a>
@@ -587,6 +603,14 @@
         <p style="margin-top:18px;font-size:0.85rem;color:var(--muted);">
             All repositories → <a href="https://github.com/Gear-I" target="_blank">github.com/Gear-I</a>
         </p>
+    </section>
+    <!-- Publications -->
+    <section id="publications">
+        <h2 class="section-title">Publications</h2>
+        <a class="card publication-card" href="https://www.forensicfocus.com/articles/corrobora-cross-artifact-consistency-analysis-for-windows-digital-forensics/" target="_blank" rel="noopener">
+            <h3>📄 Corrobora: Cross-Artifact Consistency Analysis for Windows Digital Forensics</h3>
+            <p>Forensic Focus · Article ↗</p>
+        </a>
     </section>
     <!-- Certifications -->
     <section id="certifications">
@@ -642,14 +666,6 @@
                     <li><a href="https://www.linkedin.com/in/dielle-d-350a0b186" target="_blank">LinkedIn</a></li>
                     <li><a href="https://github.com/Gear-I" target="_blank">GitHub</a></li>
                     <li><a href="https://infosec.exchange/@ddenoon" target="_blank">InfoSec Exchange</a></li>
-                </ul>
-            </div>
-            <div class="links-group">
-                <h3>Resources</h3>
-                <ul>
-                    <li><a href="https://github.com/abrignoni/iLEAPP" target="_blank">iLEAPP (upstream)</a></li>
-                    <li><a href="https://github.com/abrignoni/ALEAPP" target="_blank">ALEAPP (upstream)</a></li>
-                    <li><a href="https://www.leapps.org/releases" target="_blank">LEAPPs Releases</a></li>
                 </ul>
             </div>
         </div>
